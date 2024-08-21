@@ -1,6 +1,7 @@
 "use client";
 import MainBoard from "@/components/MainBoard";
-import StakingBoard from "@/components/StakingBoard";
+import StakingBoardForm from "@/components/StakingBoardForm";
+
 import WelcomeBoard from "@/components/WelcomeBoard";
 import { useWalletContext } from "@/providers/WalletProvider";
 import {
@@ -21,7 +22,7 @@ const HomePage = () => {
     <Box maxWidth='container.md' mx='auto' my={4} px={4} flex={1} w='full'>
          <Tabs>
       <TabList>
-        <Tab>Profile</Tab>
+        <Tab>Wallet</Tab>
         <Tab>Staking</Tab>
       </TabList>
 
@@ -39,7 +40,18 @@ const HomePage = () => {
           </Box>
         </TabPanel>
         <TabPanel>
-          <StakingBoard />
+        <Box
+            maxWidth="container.md"
+            mx="auto"
+            my={4}
+            px={4}
+            flex={1}
+            w="full"
+          >
+             <StakingBoardForm />
+   
+          </Box>
+         
         </TabPanel>
       </TabPanels>
     </Tabs>

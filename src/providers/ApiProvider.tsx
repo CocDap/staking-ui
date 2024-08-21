@@ -9,7 +9,6 @@ import { DedotClient, LegacyClient } from 'dedot';
 
 interface ApiContextProps {
   api?: DedotClient;
-  legacy?: LegacyClient;
   apiReady: boolean;
   network: NetworkInfo;
   setNetwork: (one: NetworkInfo) => void;
