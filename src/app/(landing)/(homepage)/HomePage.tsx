@@ -48,7 +48,8 @@ const HomePage = () => {
             flex={1}
             w="full"
           >
-             <StakingBoardForm />
+             {!!injectedApi ?  <StakingBoardForm /> : <WelcomeBoard />}
+            
    
           </Box>
          

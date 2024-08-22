@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { date, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 import useBalance from "@/hooks/useBalance";
 import { txToaster } from "@/utils/txToaster";
 import useContractTx from "@/hooks/useContractTx";
-import { shortenAddress } from "@/utils/string";
+import { formatBalance, shortenAddress } from "@/utils/string";
 
 // Define Zod schema for validation
 const schema = z.object({
@@ -52,6 +52,15 @@ const StakingBoardForm: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
+  const {
+    data: balanceOf,
+    isLoading,
+    refresh,
+  } = useContractQuery({
+    contract,
+    fn: "psp22BalanceOf",
+    args: [selectedAccount ? selectedAccount.address : ""],
+  });
 
   const handleMinToken = async () => {
     if (!contract) return;
@@ -84,8 +93,11 @@ const StakingBoardForm: React.FC = () => {
     } catch (e: any) {
       console.error(e, e.message);
       toaster.onError(e);
+    } finally {
+      refresh();
     }
   };
+
 
   // Listen to Transfer event from system events
 
@@ -93,6 +105,9 @@ const StakingBoardForm: React.FC = () => {
     contract,
     "Transfer",
     useCallback((events) => {
+        // re-fetch balance tst token
+      refresh();
+
       events.forEach((psp22Event) => {
         const {
           name,
@@ -109,12 +124,9 @@ const StakingBoardForm: React.FC = () => {
               Found a <b>{name}</b> event
             </p>
             <p style={{ fontSize: 12 }}>
-              Sent from: <b>{shortenAddress(from?.address())}</b>
-            </p>
-            <p style={{ fontSize: 12 }}>
               To:{" "}
               <b>
-                {shortenAddress(to?.address())} : {value}
+                {shortenAddress(to?.address())} claim {value} (Tst)
               </b>
             </p>
           </div>
@@ -179,7 +191,10 @@ const StakingBoardForm: React.FC = () => {
 
           <Text>My Stake: 0 TestToken (Tst)</Text>
           <Text>My Estimated Reward: 0.000 TestToken (Tst)</Text>
-          <Text>My balance: 213212 TestToken (Tst)</Text>
+          <Text>
+            My balance: {selectedAccount ? formatBalance(balanceOf) : "0"}{" "}
+            TestToken (Tst)
+          </Text>
 
           <Text>FOR TESTING PURPOSE ONLY</Text>
 
