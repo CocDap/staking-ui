@@ -15,16 +15,11 @@ export default function MainHeader() {
         px={4}
         mx='auto'
         display='flex'
-        justifyContent='space-between'
+        justifyContent='end'
         alignItems='center'
         gap={4}
         h={16}>
-        <a href='/'>
-        Home
-          {/* <Box w={9}>
-            <img src='/dedot-dark-logo.png' />
-          </Box> */}
-        </a>
+        
         <Flex gap={2}>{injectedApi ? <AccountSelection /> : <WalletSelection />}</Flex>
       </Container>
     </Box>
