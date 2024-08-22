@@ -132,7 +132,7 @@ const StakingBoardForm: React.FC = () => {
           </div>
         );
       });
-    }, [])
+    }, [refresh])
   );
 
   const onSubmit = (data: FormData) => {
