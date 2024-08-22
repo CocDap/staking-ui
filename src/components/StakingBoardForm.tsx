@@ -44,6 +44,8 @@ const StakingBoardForm: React.FC = () => {
   const balance = useBalance(selectedAccount?.address);
   const mintableMintTx = useContractTx(contract, "psp22MintableMint");
 
+
+
   const {
     register,
     handleSubmit,
@@ -61,6 +63,16 @@ const StakingBoardForm: React.FC = () => {
     fn: "psp22BalanceOf",
     args: [selectedAccount ? selectedAccount.address : ""],
   });
+
+  const {
+    data: tokenDecimal,
+  
+  } = useContractQuery({
+    contract,
+    fn: "psp22MetadataTokenDecimals",
+   
+  });
+
 
   const handleMinToken = async () => {
     if (!contract) return;
@@ -81,7 +93,7 @@ const StakingBoardForm: React.FC = () => {
       await mintableMintTx.signAndSend({
         args: [
           BigInt(
-            `${parseFloat(amountToSend) * Math.pow(10, network.decimals)}`
+            `${parseFloat(amountToSend) * Math.pow(10, tokenDecimal ?? 18)}`
           ),
         ],
         callback: ({ status }) => {
@@ -105,9 +117,6 @@ const StakingBoardForm: React.FC = () => {
     contract,
     "Transfer",
     useCallback((events) => {
-        // re-fetch balance tst token
-      refresh();
-
       events.forEach((psp22Event) => {
         const {
           name,
@@ -192,7 +201,7 @@ const StakingBoardForm: React.FC = () => {
           <Text>My Stake: 0 TestToken (Tst)</Text>
           <Text>My Estimated Reward: 0.000 TestToken (Tst)</Text>
           <Text>
-            My balance: {selectedAccount ? formatBalance(balanceOf) : "0"}{" "}
+            My balance:<strong> {selectedAccount ? formatBalance(balanceOf, tokenDecimal ?? 18) : "0"}{" "}</strong>
             TestToken (Tst)
           </Text>
 
