@@ -15,9 +15,9 @@ export const shortenAddress = (address?: string): string => {
   return `${address.substring(0, 6)}...${address.substring(length - 6, length)}`;
 };
 
-export const formatBalance = (balance: bigint | undefined, decimal: number = 18): string => {
+export const formatBalance = (balance: bigint | undefined, decimal: number = 10): string => {
   if (!balance) return '';
 
-  return (parseFloat(balance.toString()) / Math.pow(10, decimal)).toFixed(0).toString();
+  return (parseFloat(balance.toString()) / Math.pow(10, decimal)).toFixed(4).toString();
 };
 

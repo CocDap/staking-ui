@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useBoolean } from 'react-use';
 import { useApiContext } from '@/providers/ApiProvider';
 import { FrameSystemAccountInfo } from '@dedot/chaintypes/substrate'; 
+import { formatBalance } from '@/utils/string';
 
 interface AccountBalancesProps {
   address: string;
@@ -37,16 +38,9 @@ export default function AccountBalances({ address }: AccountBalancesProps) {
   const values = [
     {
       label: 'Free Balance',
-      amount: balance?.data?.free || 0n,
+      amount: balance?.data?.free ?? 0n,
     },
-    {
-      label: 'Reserved Balance',
-      amount: balance?.data?.reserved || 0n,
-    },
-    {
-      label: 'Frozen Balance',
-      amount: balance?.data?.frozen || 0n,
-    },
+   
   ];
 
   return (
@@ -56,7 +50,7 @@ export default function AccountBalances({ address }: AccountBalancesProps) {
           <Text>{label}:</Text>
           <Skeleton h={6} minW={10} isLoaded={apiReady && !loading}>
             <strong>
-              {(parseFloat(amount.toString()) / Math.pow(10, network.decimals)).toString()}
+              {formatBalance(amount, network.decimals) || '0'}
               &nbsp;
               {network.symbol}
             </strong>

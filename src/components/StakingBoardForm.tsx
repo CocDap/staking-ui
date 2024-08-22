@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { date, z } from "zod";
+import { date, symbol, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
@@ -44,8 +44,6 @@ const StakingBoardForm: React.FC = () => {
   const balance = useBalance(selectedAccount?.address);
   const mintableMintTx = useContractTx(contract, "psp22MintableMint");
 
-
-
   const {
     register,
     handleSubmit,
@@ -64,15 +62,15 @@ const StakingBoardForm: React.FC = () => {
     args: [selectedAccount ? selectedAccount.address : ""],
   });
 
-  const {
-    data: tokenDecimal,
-  
-  } = useContractQuery({
+  const { data: tokenDecimal } = useContractQuery({
     contract,
     fn: "psp22MetadataTokenDecimals",
-   
   });
 
+  const { data: tokenSymbol } = useContractQuery({
+    contract,
+    fn: "psp22MetadataTokenSymbol",
+  });
 
   const handleMinToken = async () => {
     if (!contract) return;
@@ -109,7 +107,6 @@ const StakingBoardForm: React.FC = () => {
       refresh();
     }
   };
-
 
   // Listen to Transfer event from system events
 
@@ -149,12 +146,25 @@ const StakingBoardForm: React.FC = () => {
   };
 
   return (
-    <Box maxW="lg" mx="auto" mt={10}>
+    <Box
+      maxW="lg"
+      mx="auto"
+      mt={10}
+      border={1}
+      borderStyle={"solid"}
+      p={8}
+      rounded={8}
+      borderColor={"gray.200"}
+      textAlign={"center"}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
-          <Text>Yield Farming/Token Staking dApp</Text>
-          <Text>Address</Text>
-          <Text>36.5% (APY) - 0.1% Daily Earnings</Text>
+          <VStack spacing={2}>
+            <Text fontWeight={700} fontSize={"24"}>
+              Yield Farming/Token Staking dApp
+            </Text>
+            <Text>36.5% (APY) - 0.1% Daily Earnings</Text>
+          </VStack>
 
           {/* Number Token Field */}
           <FormControl isInvalid={!!errors.numberToken}>
@@ -196,16 +206,34 @@ const StakingBoardForm: React.FC = () => {
           </Flex>
 
           {/* Text */}
-          <Text>Total Stake (by all users): 0 TestToken (Tst)</Text>
+          <VStack spacing={2}>
+            <Text>
+              Total Stake (by all users):<strong> 0.000 </strong>
+              <strong>{tokenSymbol}</strong>
+            </Text>
 
-          <Text>My Stake: 0 TestToken (Tst)</Text>
-          <Text>My Estimated Reward: 0.000 TestToken (Tst)</Text>
-          <Text>
-            My balance:<strong> {selectedAccount ? formatBalance(balanceOf, tokenDecimal ?? 18) : "0"}{" "}</strong>
-            TestToken (Tst)
+            <Text>
+              My Stake: <strong> 0.000 </strong>
+              <strong>{tokenSymbol}</strong>
+            </Text>
+            <Text>
+              My Estimated Reward:
+              <strong> 0.000 </strong>
+              <strong>{tokenSymbol}</strong>
+            </Text>
+            <Text>
+              My balance:
+              <strong>
+                {" "}
+                {formatBalance(balanceOf, tokenDecimal ?? 18) || "0"}{" "}
+              </strong>
+              <strong>{tokenSymbol}</strong>
+            </Text>
+          </VStack>
+
+          <Text fontWeight={700} fontSize={"24"}>
+            FOR TESTING PURPOSE ONLY
           </Text>
-
-          <Text>FOR TESTING PURPOSE ONLY</Text>
 
           {/* Button */}
 
@@ -221,21 +249,20 @@ const StakingBoardForm: React.FC = () => {
               colorScheme="teal"
               width="full"
               onClick={handleMinToken}
+              isLoading={mintableMintTx.isInProgress}
             >
-              Claim for 1000 Tst (User)
-            </Button>
-
-            <Button type="button" colorScheme="teal" width="full">
-              Redistribute rewards (Admin)
+              Claim for 1000 {tokenSymbol} (User)
             </Button>
           </Flex>
 
           {/* Text */}
 
-          <Text>Selected Network private id: 57777</Text>
-          <Text>Contract Balance: 121232 TestToken (Tst) </Text>
-
-          <Text>Staking Contract address: 0x18219</Text>
+          <VStack spacing={2}>
+            <Text>
+              Contract Balance: <strong> 0.000 </strong>
+              <strong>{tokenSymbol}</strong>
+            </Text>
+          </VStack>
         </VStack>
       </form>
     </Box>

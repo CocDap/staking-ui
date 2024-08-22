@@ -19,7 +19,7 @@ import React from "react";
 const HomePage = () => {
   const { injectedApi } = useWalletContext();
   return (
-    <Box maxWidth='container.md' mx='auto' my={4} px={4} flex={1} w='full'>
+    <Box maxWidth='container.md' mx='auto' my={4} flex={1} w='full'>
          <Tabs>
       <TabList>
         <Tab>Wallet</Tab>
@@ -44,7 +44,6 @@ const HomePage = () => {
             maxWidth="container.md"
             mx="auto"
             my={4}
-            px={4}
             flex={1}
             w="full"
           >
