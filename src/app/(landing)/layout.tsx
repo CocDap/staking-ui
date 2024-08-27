@@ -6,8 +6,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WalletProvider from "@/providers/WalletProvider";
 import ApiProvider from "@/providers/ApiProvider";
-import MainHeader from "@/components/shared/MainHeader";
 import MainFooter from "@/components/shared/MainFooter";
+import MainHeader from "@/components/shared/MainHeader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

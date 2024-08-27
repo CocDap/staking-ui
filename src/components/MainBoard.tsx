@@ -2,7 +2,6 @@
 import { useWalletContext } from "@/providers/WalletProvider";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import WalletSelection from "@/components/dialog/WalletSelection";
-import AccountSelection from "@/components/AccountSelection";
 import ConnectedWallet from "@/components/dialog/ConnectedWallet";
 import WalletInfor from "@/components/WalletInfor";
 
@@ -25,7 +24,6 @@ export default function MainBoard() {
           <strong>{accounts.length}</strong> accounts connected
         </Text>
       </Flex>
-      {/* <AccountSelection /> */}
       <WalletInfor/>
     </Box>
   )

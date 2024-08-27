@@ -8,6 +8,8 @@ import useDisplayAddress from '@/hooks/useDisplayAddress';
 import { useApiContext } from '@/providers/ApiProvider';
 import { useWalletContext } from '@/providers/WalletProvider';
 import { formatBalance, shortenAddress } from '@/utils/string';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import Image from 'next/image';
 
 export default function AccountSelection() {
   const { accounts, injectedApi, selectedAccount, setSelectedAccount, signOut, connectedWallet } = useWalletContext();
@@ -32,16 +34,18 @@ export default function AccountSelection() {
   const { name, address } = selectedAccount;
 
   return (
-    <Box>
+    <Box >
       <Menu autoSelect={false}>
-        <MenuButton as={Button} variant='outline'>
+        <MenuButton as={Button} backgroundColor={'#89d7e9'} rounded={'full'}   _hover={{
+              shadow: "md",
+              backgroundColor: "#C8F5FF",
+            }}>
           <Flex align='center' gap={2}>
-            <Text fontWeight='semi-bold' fontSize='md'>
-              {name}
+            
+            <Text fontSize='sm' fontWeight='500' textColor={"#026262"}>
+              {shortenAddress(displayAddress)}
             </Text>
-            <Text fontSize='sm' fontWeight='400'>
-              ({shortenAddress(displayAddress)})
-            </Text>
+            <ChevronDownIcon fontSize='xl' />
           </Flex>
         </MenuButton>
 
