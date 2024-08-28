@@ -72,12 +72,7 @@ export default function WalletSelection({
     <>
       {buttonStyle === ButtonStyle.MENU_ITEM && (
         <MenuItem
-          backgroundColor={"#89d7e9"}
-          rounded={"full"}
-          _hover={{
-            shadow: "md",
-            backgroundColor: "#C8F5FF",
-          }}
+          
           onClick={onOpen}
           {...buttonProps}
         >

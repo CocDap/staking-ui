@@ -1,8 +1,13 @@
 "use client";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  HomeIcon,
+  CircleStackIcon,
+  InboxStackIcon,
+} from "@heroicons/react/24/outline";
 import React from "react";
 
 type HeaderMenuLink = {
@@ -15,16 +20,17 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Home",
     href: "/",
+    icon: <HomeIcon height={16} width={16} />,
   },
   {
     label: "Staker UI",
     href: "/staker-ui",
-    icon: "",
+    icon: <CircleStackIcon height={16} width={16} />,
   },
   {
     label: "Stake Events",
-    href: "",
-    icon: "",
+    href: "/stakings",
+    icon: <InboxStackIcon height={16} width={16} />,
   },
 ];
 
@@ -33,7 +39,12 @@ const MenuNavigate = () => {
   console.log("🚀 ~ MenuNavigate ~ pathName:", pathName);
 
   return (
-    <Flex gap={2} alignItems={"center"} justifyContent={"center"} textColor={"#026262"}>
+    <Flex
+      gap={2}
+      alignItems={"center"}
+      justifyContent={"center"}
+      textColor={"#026262"}
+    >
       <Box position={"relative"} width={9} height={9} mr={8}>
         <Image
           fill
@@ -46,6 +57,10 @@ const MenuNavigate = () => {
       {menuLinks.map((link) => (
         <Link href={link.href} key={link.label}>
           <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            gap={2}
             fontWeight={pathName === link.href ? "bold" : "semibold"}
             paddingY={2}
             paddingX={4}
@@ -56,9 +71,10 @@ const MenuNavigate = () => {
               backgroundColor: "#C8F5FF",
             }}
             backgroundColor={pathName === link.href ? "#89d7e9" : ""}
-            fontSize={"14px"}
+            flexShrink={0}
           >
-            {link.label}
+            {link.icon}
+            <Text fontSize={"14px"}>{link.label}</Text>
           </Box>
         </Link>
       ))}

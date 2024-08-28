@@ -14,7 +14,12 @@ export default function MainBoard() {
         <ConnectedWallet />
         <Flex gap={2}>
           <WalletSelection buttonLabel='Switch Wallet' buttonProps={{ size: 'sm', variant: 'outline' }} />
-          <Button onClick={signOut} size='sm' colorScheme='red' variant='outline'>
+          <Button 
+          rounded={"full"}
+          _hover={{
+            shadow: "md",
+          }}
+          onClick={signOut} size='sm' colorScheme='red' variant='outline'>
             Sign out
           </Button>
         </Flex>
