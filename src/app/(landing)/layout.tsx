@@ -8,6 +8,7 @@ import WalletProvider from "@/providers/WalletProvider";
 import ApiProvider from "@/providers/ApiProvider";
 import MainFooter from "@/components/shared/MainFooter";
 import MainHeader from "@/components/shared/MainHeader";
+import { TokenContractWrap } from "@/providers/TokenContractWrap";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,11 +27,16 @@ export default function RootLayout({
         <UiProvider>
           <WalletProvider>
             <ApiProvider>
+            <TokenContractWrap>
+
               <MainHeader/>
               <ToastContainer />
               {children}
               <MainFooter/>
+            </TokenContractWrap>
+
             </ApiProvider>
+            
           </WalletProvider>
         </UiProvider>
       </body>

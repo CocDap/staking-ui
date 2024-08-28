@@ -16,35 +16,18 @@ import {
   BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import useWatchContractEvent from "@/hooks/useWatchContractEvent";
+import { useTokenContract } from "@/providers/TokenContractWrap";
 
 const MainFooter: FC<Props> = () => {
   const [amountToSend, setAmountToSend] = useState<string>("100");
-  const { network } = useApiContext();
   const contract = usePsp22Contract();
   const { selectedAccount } = useWalletContext();
   const balance = useBalance(selectedAccount?.address);
   const mintableMintTx = useContractTx(contract, "psp22MintableMint");
 
-  const { data: tokenDecimal } = useContractQuery({
-    contract,
-    fn: "psp22MetadataTokenDecimals",
-  });
+   const {tokenDecimal, tokenSymbol, balanceOf, refreshBalanceOf} = useTokenContract()
 
-  const { data: tokenSymbol } = useContractQuery({
-    contract,
-    fn: "psp22MetadataTokenSymbol",
-  });
 
-  const {
-    data: balanceOf,
-    isLoading,
-    refresh,
-  } = useContractQuery({
-    contract,
-    fn: "psp22BalanceOf",
-    args: [selectedAccount ? selectedAccount.address : ""],
-  });
-  console.log("🚀 ~ balanceOf:", balanceOf);
 
   const handleMinToken = async () => {
     if (!contract) return;
@@ -78,7 +61,7 @@ const MainFooter: FC<Props> = () => {
       console.error(e, e.message);
       toaster.onError(e);
     } finally {
-      refresh();
+      refreshBalanceOf();
     }
   };
 
