@@ -17,6 +17,7 @@ export interface ConstructorQuery<ChainApi extends GenericSubstrateApi>
    *
    * @param {AccountId32Like} owner
    * @param {AccountId32Like} tokenContract
+   * @param {AccountId32Like} vault
    * @param {ConstructorCallOptions} options
    *
    * @selector 0x9bae9d5e
@@ -26,6 +27,7 @@ export interface ConstructorQuery<ChainApi extends GenericSubstrateApi>
     (
       owner: AccountId32Like,
       tokenContract: AccountId32Like,
+      vault: AccountId32Like,
       options: ConstructorCallOptions,
     ) => Promise<
       GenericConstructorCallResult<[], ContractInstantiateResult<ChainApi>>

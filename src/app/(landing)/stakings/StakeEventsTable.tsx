@@ -9,6 +9,7 @@ const StakeEventsTable = () => {
     const myEvents = localStorage.getItem('myEvents');
     if (myEvents) {
       const parsedEvents = JSON.parse(myEvents);
+      console.log("🚀 ~ useEffect ~ parsedEvents:", parsedEvents)
       setListEvent(parsedEvents)
   
     }

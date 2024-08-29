@@ -15,6 +15,7 @@ export interface ConstructorTx<ChainApi extends GenericSubstrateApi>
    *
    * @param {AccountId32Like} owner
    * @param {AccountId32Like} tokenContract
+   * @param {AccountId32Like} vault
    * @param {ConstructorTxOptions} options
    *
    * @selector 0x9bae9d5e
@@ -24,6 +25,7 @@ export interface ConstructorTx<ChainApi extends GenericSubstrateApi>
     (
       owner: AccountId32Like,
       tokenContract: AccountId32Like,
+      vault: AccountId32Like,
       options: ConstructorTxOptions,
     ) => GenericInstantiateSubmittableExtrinsic<ChainApi>
   >;

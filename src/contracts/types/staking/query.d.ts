@@ -12,6 +12,7 @@ import type {
 import type {
   StakingErrorsStakingError,
   InkPrimitivesLangError,
+  StakingDataUserStakeData,
 } from "./types";
 
 export interface ContractQuery<ChainApi extends GenericSubstrateApi>
@@ -38,11 +39,31 @@ export interface ContractQuery<ChainApi extends GenericSubstrateApi>
 
   /**
    *
+   * @param {bigint} amount
    * @param {ContractCallOptions} options
    *
-   * @selector 0x82364901
+   * @selector 0x410fcc9d
    **/
-  unstake: GenericContractQueryCall<
+  withdraw: GenericContractQueryCall<
+    ChainApi,
+    (
+      amount: bigint,
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<
+        Result<[], StakingErrorsStakingError>,
+        ContractCallResult<ChainApi>
+      >
+    >
+  >;
+
+  /**
+   *
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x9a8353a7
+   **/
+  claimReward: GenericContractQueryCall<
     ChainApi,
     (
       options: ContractCallOptions,
@@ -52,6 +73,21 @@ export interface ContractQuery<ChainApi extends GenericSubstrateApi>
         ContractCallResult<ChainApi>
       >
     >
+  >;
+
+  /**
+   *
+   * @param {bigint} period
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x00a64005
+   **/
+  setLockTime: GenericContractQueryCall<
+    ChainApi,
+    (
+      period: bigint,
+      options: ContractCallOptions,
+    ) => Promise<GenericContractCallResult<[], ContractCallResult<ChainApi>>>
   >;
 
   /**
@@ -71,12 +107,47 @@ export interface ContractQuery<ChainApi extends GenericSubstrateApi>
 
   /**
    *
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0xa78a0844
+   **/
+  getTotalReward: GenericContractQueryCall<
+    ChainApi,
+    (
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<bigint, ContractCallResult<ChainApi>>
+    >
+  >;
+
+  /**
+   *
    * @param {AccountId32Like} user
    * @param {ContractCallOptions} options
    *
-   * @selector 0x15ee10d6
+   * @selector 0x334c51cd
    **/
-  getBalanceByAccount: GenericContractQueryCall<
+  getUserData: GenericContractQueryCall<
+    ChainApi,
+    (
+      user: AccountId32Like,
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<
+        StakingDataUserStakeData,
+        ContractCallResult<ChainApi>
+      >
+    >
+  >;
+
+  /**
+   *
+   * @param {AccountId32Like} user
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0xdfd48348
+   **/
+  getUserReward: GenericContractQueryCall<
     ChainApi,
     (
       user: AccountId32Like,
@@ -101,6 +172,72 @@ export interface ContractQuery<ChainApi extends GenericSubstrateApi>
         Array<AccountId32>,
         ContractCallResult<ChainApi>
       >
+    >
+  >;
+
+  /**
+   *
+   * @param {AccountId32Like} user
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x624d1009
+   **/
+  startTime: GenericContractQueryCall<
+    ChainApi,
+    (
+      user: AccountId32Like,
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<bigint, ContractCallResult<ChainApi>>
+    >
+  >;
+
+  /**
+   *
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x4488d24e
+   **/
+  durationTime: GenericContractQueryCall<
+    ChainApi,
+    (
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<bigint, ContractCallResult<ChainApi>>
+    >
+  >;
+
+  /**
+   *
+   * @param {AccountId32Like} user
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x5f3e43a4
+   **/
+  endTime: GenericContractQueryCall<
+    ChainApi,
+    (
+      user: AccountId32Like,
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<bigint, ContractCallResult<ChainApi>>
+    >
+  >;
+
+  /**
+   *
+   * @param {AccountId32Like} user
+   * @param {ContractCallOptions} options
+   *
+   * @selector 0x8fd74857
+   **/
+  timeRemaining: GenericContractQueryCall<
+    ChainApi,
+    (
+      user: AccountId32Like,
+      options: ContractCallOptions,
+    ) => Promise<
+      GenericContractCallResult<bigint, ContractCallResult<ChainApi>>
     >
   >;
 }

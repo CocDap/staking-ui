@@ -6,7 +6,7 @@ import useContractTx from "@/hooks/useContractTx";
 import usePsp22Contract from "@/hooks/usePsp22Contract";
 import useStakingContract from "@/hooks/useStakingContract";
 import { useWalletContext } from "@/providers/WalletProvider";
-import { formatBalance, shortenAddress } from "@/utils/string";
+import { formatBalance, formatLockingPeriod, shortenAddress } from "@/utils/string";
 import { txToaster } from "@/utils/txToaster";
 import { Box, Button, Text, useDisclosure } from "@chakra-ui/react";
 import { isContractInstantiateDispatchError } from "dedot/contracts";
@@ -27,7 +27,7 @@ const StakeContractInteraction = () => {
   const { selectedAccount } = useWalletContext();
   const balance = useBalance(selectedAccount?.address);
   const stakingTx = useContractTx(stakingContract, "stake");
-  const unStakingTx = useContractTx(stakingContract, "unstake");
+  const unStakingTx = useContractTx(stakingContract, "withdraw");
 
   const approveTx = useContractTx(psp22Contract, "psp22Approve");
   const { refreshBalanceOf, balanceOf } = useTokenContract();
@@ -52,9 +52,19 @@ const StakeContractInteraction = () => {
     refresh: refreshYouStake,
   } = useContractQuery({
     contract: stakingContract,
-    fn: "getBalanceByAccount",
+    fn: "getUserData",
     args: [selectedAccount?.address || ""],
   });
+
+
+  const {
+    data: lockingPeriod,
+   
+  } = useContractQuery({
+    contract: stakingContract,
+    fn: "durationTime",
+  });
+
 
   const handApproveToken = async (amountToSend: string) => {
     console.log(
@@ -147,7 +157,7 @@ const StakeContractInteraction = () => {
     }
   };
 
-  const handUnStakeToken = async () => {
+  const handUnStakeToken = async (amountToSend: string) => {
     console.log(
       "===========================Unstake Token ============================="
     );
@@ -168,6 +178,11 @@ const StakeContractInteraction = () => {
 
     try {
       await unStakingTx.signAndSend({
+        args: [
+          BigInt(
+            `${parseFloat(amountToSend) * Math.pow(10, tokenDecimal || 18)}`
+          ),
+        ],
         callback: ({ status }) => {
           console.log(status);
 
@@ -189,103 +204,103 @@ const StakeContractInteraction = () => {
   useWatchContractEvent(
     stakingContract,
     "Stake",
-    useCallback((events) => {
-      events.forEach((stakingEvent) => {
-        const {
-          name,
-          data: { user, amount },
-        } = stakingEvent;
+    useCallback(
+      (events) => {
+        events.forEach((stakingEvent) => {
+          const {
+            name,
+            data: { user, amount },
+          } = stakingEvent;
 
-        console.log(
-          `Found a ${name} event sent from: ${user?.address()}, message: ${amount}  `
-        );
+          console.log(
+            `Found a ${name} event sent from: ${user?.address()}, message: ${amount}  `
+          );
 
-        // toast.info(
-        //   <div>
-        //     <p>
-        //       Found a <b>{name}</b> event
-        //     </p>
-        //     <p style={{ fontSize: 12 }}>
-        //       From:{" "}
-        //       <b>
-        //         {shortenAddress(user?.address())} stake { formatBalance(amount, tokenDecimal || 18)} (Tst)
-        //       </b>
-        //     </p>
-        //   </div>
-        // );
-        const storedEvent = localStorage.getItem('myEvents');
-        console.log("🚀 ~ events.forEach ~ storedEvent:", storedEvent)
-        let myEvent = [];
-        if (storedEvent) {
-          // Nếu đã có array, chuyển đổi chuỗi JSON trở lại thành array
-          myEvent = JSON.parse(storedEvent);
-        }
-        const stakingData = 
-          {
+          // toast.info(
+          //   <div>
+          //     <p>
+          //       Found a <b>{name}</b> event
+          //     </p>
+          //     <p style={{ fontSize: 12 }}>
+          //       From:{" "}
+          //       <b>
+          //         {shortenAddress(user?.address())} stake { formatBalance(amount, tokenDecimal || 18)} (Tst)
+          //       </b>
+          //     </p>
+          //   </div>
+          // );
+          const storedEvent = localStorage.getItem("myEvents");
+          console.log("🚀 ~ events.forEach ~ storedEvent:", storedEvent);
+          let myEvent = [];
+          if (storedEvent) {
+            // Nếu đã có array, chuyển đổi chuỗi JSON trở lại thành array
+            myEvent = JSON.parse(storedEvent);
+          }
+          const stakingData = {
             address: user.address(),
             amount: formatBalance(amount, tokenDecimal || 18),
-            method: "Stake"
-          }
-        
+            method: "Stake",
+          };
 
-        myEvent.push(stakingData);
+          myEvent.push(stakingData);
 
-        localStorage.setItem("myEvents", JSON.stringify(myEvent));
-      });
-    }, [tokenDecimal])
+          localStorage.setItem("myEvents", JSON.stringify(myEvent));
+        });
+      },
+      [tokenDecimal]
+    )
   );
-
 
   // Listen to Transfer event from system events
 
   useWatchContractEvent(
     stakingContract,
     "Unstake",
-    useCallback((events) => {
-      events.forEach((stakingEvent) => {
-        const {
-          name,
-          data: { user, amount },
-        } = stakingEvent;
+    useCallback(
+      (events) => {
+        events.forEach((stakingEvent) => {
+          const {
+            name,
+            data: { user, amount },
+          } = stakingEvent;
 
-        console.log(
-          `Found a ${name} event sent from: ${user?.address()}, message: ${amount}  `
-        );
+          console.log(
+            `Found a ${name} event sent from: ${user?.address()}, message: ${amount}  `
+          );
 
-        // toast.info(
-        //   <div>
-        //     <p>
-        //       Found a <b>{name}</b> event
-        //     </p>
-        //     <p style={{ fontSize: 12 }}>
-        //       From:{" "}
-        //       <b>
-        //         {shortenAddress(user?.address())} stake { formatBalance(amount, tokenDecimal || 18)} (Tst)
-        //       </b>
-        //     </p>
-        //   </div>
-        // );
-        const storedEvent = localStorage.getItem('myEvents');
-        let myEvent = [];
-        if (storedEvent) {
-          // Nếu đã có array, chuyển đổi chuỗi JSON trở lại thành array
-          myEvent = JSON.parse(storedEvent);
-        }
-        const stakingData = 
-          {
+          // toast.info(
+          //   <div>
+          //     <p>
+          //       Found a <b>{name}</b> event
+          //     </p>
+          //     <p style={{ fontSize: 12 }}>
+          //       From:{" "}
+          //       <b>
+          //         {shortenAddress(user?.address())} stake { formatBalance(amount, tokenDecimal || 18)} (Tst)
+          //       </b>
+          //     </p>
+          //   </div>
+          // );
+          const storedEvent = localStorage.getItem("myEvents");
+          let myEvent = [];
+          if (storedEvent) {
+            // Nếu đã có array, chuyển đổi chuỗi JSON trở lại thành array
+            myEvent = JSON.parse(storedEvent);
+          }
+          const stakingData = {
             address: user.address(),
             amount: formatBalance(amount, tokenDecimal || 18),
-            method: "unstake"
-          }
-        
+            method: "unstake",
+          };
 
-        myEvent.push(stakingData);
+          myEvent.push(stakingData);
 
-        localStorage.setItem("myEvents", JSON.stringify(myEvent));
-      });
-    }, [tokenDecimal])
+          localStorage.setItem("myEvents", JSON.stringify(myEvent));
+        });
+      },
+      [tokenDecimal]
+    )
   );
-
 
   return (
     <Box
@@ -312,7 +327,7 @@ const StakeContractInteraction = () => {
         <Text fontWeight={"600"} fontSize={"2xl"}>
           Staker Contract
         </Text>
-        <Text>01213</Text>
+        <Text>{shortenAddress(ADDRESS_STAKING)}</Text>
       </Box>
 
       <Box
@@ -323,15 +338,17 @@ const StakeContractInteraction = () => {
       >
         <Box>
           <Text fontWeight={"600"} fontSize={"xl"}>
-            Time Left
+            Locking Period
           </Text>
-          <Text>01213</Text>
+          <Text>{formatLockingPeriod(lockingPeriod) || '0'}{"s"}</Text>
         </Box>
         <Box>
           <Text fontWeight={"600"} fontSize={"xl"}>
             You Staked
           </Text>
-          <Text>{formatBalance(balanceOfStake, tokenDecimal || 18) || "0"}</Text>
+          <Text>
+            {formatBalance(balanceOfStake?.amount, tokenDecimal || 18) || "0"}
+          </Text>
         </Box>
       </Box>
 
@@ -379,7 +396,7 @@ const StakeContractInteraction = () => {
             shadow={"lg"}
             backgroundColor={"#C8F5FF"}
             textColor={"#026262"}
-            onClick={handUnStakeToken}
+            // onClick={handUnStakeToken}
           >
             WITHDRAW
           </Button>

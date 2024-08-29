@@ -27,12 +27,42 @@ export interface ContractTx<ChainApi extends GenericSubstrateApi>
 
   /**
    *
+   * @param {bigint} amount
    * @param {ContractTxOptions} options
    *
-   * @selector 0x82364901
+   * @selector 0x410fcc9d
    **/
-  unstake: GenericContractTxCall<
+  withdraw: GenericContractTxCall<
+    ChainApi,
+    (
+      amount: bigint,
+      options: ContractTxOptions,
+    ) => ContractSubmittableExtrinsic<ChainApi>
+  >;
+
+  /**
+   *
+   * @param {ContractTxOptions} options
+   *
+   * @selector 0x9a8353a7
+   **/
+  claimReward: GenericContractTxCall<
     ChainApi,
     (options: ContractTxOptions) => ContractSubmittableExtrinsic<ChainApi>
+  >;
+
+  /**
+   *
+   * @param {bigint} period
+   * @param {ContractTxOptions} options
+   *
+   * @selector 0x00a64005
+   **/
+  setLockTime: GenericContractTxCall<
+    ChainApi,
+    (
+      period: bigint,
+      options: ContractTxOptions,
+    ) => ContractSubmittableExtrinsic<ChainApi>
   >;
 }

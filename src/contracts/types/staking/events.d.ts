@@ -106,4 +106,24 @@ export interface ContractEvents<ChainApi extends GenericSubstrateApi>
       amount: bigint;
     }
   >;
+
+  /**
+   *
+   * @signature_topic: 0x2c690688a60b995d2c7416a79e84d0cfdddca51512bb40e87d6d11d144368b08
+   **/
+  Claim: GenericContractEvent<
+    "Claim",
+    {
+      /**
+       *
+       * @indexed: true
+       **/
+      user: AccountId32;
+      /**
+       *
+       * @indexed: false
+       **/
+      reward: bigint;
+    }
+  >;
 }

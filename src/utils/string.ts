@@ -21,3 +21,10 @@ export const formatBalance = (balance: bigint | undefined, decimal: number = 10)
   return (parseFloat(balance.toString()) / Math.pow(10, decimal)).toFixed(4).toString();
 };
 
+
+export const formatLockingPeriod = (time: bigint | undefined): string => {
+  if (!time) return '';
+
+  return (parseInt(time.toString()) / 1000).toString();
+};
+

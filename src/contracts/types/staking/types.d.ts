@@ -4,6 +4,13 @@ import type { AccountId32 } from "dedot/codecs";
 
 export type InkStorageLazyMapping = {};
 
+export type StakingDataUserStakeData = {
+  amount: bigint;
+  depositTime: bigint;
+  unlockTime: bigint;
+  claimedReward: bigint;
+};
+
 export type InkStorageTraitsImplsResolverKey = {};
 
 export type InkStorageTraitsImplsAutoKey = {};
@@ -13,14 +20,19 @@ export type InkStorageTraitsImplsManualKey = {};
 export type Staking = {
   data: StakingDataStakingData;
   tokenContract: AccountId32;
+  vault: AccountId32;
 };
 
 export type StakingDataStakingData = {
-  stakingBalance: InkStorageLazyMapping;
+  userData: InkStorageLazyMapping;
   hasStaked: InkStorageLazyMapping;
   owner?: AccountId32 | undefined;
   stakers: Array<AccountId32>;
   totalStaked: bigint;
+  totalRewards: bigint;
+  durationTime: bigint;
+  rewardRate: bigint;
+  pendingReward: InkStorageLazyMapping;
 };
 
 export type InkPrimitivesLangError = "CouldNotReadInput";
@@ -30,6 +42,8 @@ export type StakingErrorsStakingError =
   | { type: "OverFlow" }
   | { type: "NotApproved" }
   | { type: "TransferFail" }
-  | { type: "LowLiquidity" };
+  | { type: "LowLiquidity" }
+  | { type: "StakeNotFound" }
+  | { type: "LockinPeriodNotEnded" };
 
 export type InkEnvNoChainExtension = null;
