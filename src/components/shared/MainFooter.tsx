@@ -26,6 +26,7 @@ const MainFooter: FC<Props> = () => {
   const mintableMintTx = useContractTx(contract, "psp22MintableMint");
 
    const {tokenDecimal, tokenSymbol, balanceOf, refreshBalanceOf} = useTokenContract()
+   console.log("🚀 ~ tokenDecimal:", tokenDecimal)
 
 
 
@@ -48,7 +49,7 @@ const MainFooter: FC<Props> = () => {
       await mintableMintTx.signAndSend({
         args: [
           BigInt(
-            `${parseFloat(amountToSend) * Math.pow(10, tokenDecimal ?? 18)}`
+            `${parseFloat(amountToSend) * Math.pow(10,tokenDecimal || 18)}`
           ),
         ],
         callback: ({ status }) => {
@@ -134,7 +135,7 @@ useWatchContractEvent(
           fontWeight={"semibold"}
           textColor={"#026262"} fontSize={'14px'}
           >
-            {formatBalance(balanceOf, tokenDecimal ?? 18) || "0.0000"}{" "}
+            {formatBalance(balanceOf, tokenDecimal || 18) || "0.0000"}{" "}
             {tokenSymbol ?? "TKA"}
           </Text>
         </Button>
