@@ -9,6 +9,7 @@ import Link from "next/link";
 import MenuNavigate from "@/components/shared/MainHeader/MenuNavigate";
 import Image from "next/image";
 import FaucetButton from "@/components/shared/MainHeader/FaucetButton";
+import { DrawerMenu } from "@/components/shared/MainHeader/DrawerMenu";
 
 export default function MainHeader() {
   const { injectedApi } = useWalletContext();
@@ -25,7 +26,7 @@ export default function MainHeader() {
         gap={4}
         h={16}
       >
-        
+        <DrawerMenu/>
        <MenuNavigate/>
         <Flex gap={2}>
         <NetworkSelection />

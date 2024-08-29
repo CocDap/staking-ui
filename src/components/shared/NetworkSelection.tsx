@@ -19,16 +19,16 @@ export default function NetworkSelection() {
   const [smallest] = useMediaQuery('(max-width: 325px)');
 
   return (
-    <Menu autoSelect={false}>
-      <MenuButton as={Button} backgroundColor={'#89d7e9'} rounded={'full'}   _hover={{
+    <Menu autoSelect={false} >
+      <MenuButton as={Button} flexShrink={0} backgroundColor={'#89d7e9'} rounded={'full'}   _hover={{
               shadow: "md",
               backgroundColor: "#C8F5FF",
             }}>
-        <Flex direction='row' align='center' gap={2}>
+        <Flex direction='row' align='center' gap={2} >
           <Image src={network.logo} alt={network.name} width={22} height={22} style={{ borderRadius: 4 }} />
           {/* {!smallest && <span>{network.name}</span>} */}
 
-          <Box >
+          <Box flexShrink={0}>
             <NetworkStatusIndicator />
           </Box>
         </Flex>

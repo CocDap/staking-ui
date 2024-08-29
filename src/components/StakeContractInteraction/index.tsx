@@ -185,6 +185,7 @@ const StakeContractInteraction = () => {
 
   return (
     <Box
+      maxWidth={"container.md"}
       border={"8px solid #89d7e9"}
       backgroundColor={"#F0FCFF"}
       width={"100%"}
@@ -194,7 +195,10 @@ const StakeContractInteraction = () => {
       justifyContent={"center"}
       gap={"12"}
       paddingY={"8"}
-      paddingX={"20"}
+      paddingX={{
+        md: "20",
+        base: "18",
+      }}
       shadow={"lg"}
       textColor={"#026262"}
       rounded={"xl"}
@@ -235,10 +239,22 @@ const StakeContractInteraction = () => {
       </Box>
 
       <Box display={"flex"} flexDirection={"column"} gap={"8"}>
-        <Box display={"flex"} gap={"8"}>
+        <Box
+          display={"flex"}
+          gap={{
+            md: "8",
+            base: "4",
+          }}
+        >
           <Button
-            paddingX={"8"}
-            paddingY={"6"}
+            paddingX={{
+              md: "8",
+              base: "4",
+            }}
+            paddingY={{
+              md: "6",
+              base: "3",
+            }}
             rounded={"full"}
             shadow={"lg"}
             backgroundColor={"#C8F5FF"}
@@ -247,8 +263,14 @@ const StakeContractInteraction = () => {
             EXECUTE!
           </Button>
           <Button
-            paddingX={"8"}
-            paddingY={"6"}
+            paddingX={{
+              md: "8",
+              base: "4",
+            }}
+            paddingY={{
+              md: "6",
+              base: "3",
+            }}
             rounded={"full"}
             shadow={"lg"}
             backgroundColor={"#C8F5FF"}

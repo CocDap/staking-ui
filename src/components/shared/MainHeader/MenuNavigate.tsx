@@ -36,10 +36,14 @@ export const menuLinks: HeaderMenuLink[] = [
 
 const MenuNavigate = () => {
   const pathName = usePathname();
-  console.log("🚀 ~ MenuNavigate ~ pathName:", pathName);
+  
 
   return (
     <Flex
+    display={{
+      lg: "flex",
+      base: "none",
+    }}
       gap={2}
       alignItems={"center"}
       justifyContent={"center"}
