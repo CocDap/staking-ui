@@ -5,10 +5,7 @@ import AccountSelection from "@/components/AccountSelection";
 import WalletSelection from "@/components/dialog/WalletSelection";
 import { useWalletContext } from "@/providers/WalletProvider";
 import NetworkSelection from "@/components/shared/NetworkSelection";
-import Link from "next/link";
 import MenuNavigate from "@/components/shared/MainHeader/MenuNavigate";
-import Image from "next/image";
-import FaucetButton from "@/components/shared/MainHeader/FaucetButton";
 import { DrawerMenu } from "@/components/shared/MainHeader/DrawerMenu";
 
 export default function MainHeader() {

@@ -5,7 +5,7 @@ import useApi from '@/hooks/useApi';
 import { useWalletContext } from '@/providers/WalletProvider';
 import { NetworkInfo, Props } from '@/types';
 import { SUPPORTED_NETWORKS } from '@/utils/networks';
-import { DedotClient, LegacyClient } from 'dedot';
+import { DedotClient } from 'dedot';
 
 interface ApiContextProps {
   api?: DedotClient;

@@ -49,15 +49,7 @@ const MenuNavigate = () => {
       justifyContent={"center"}
       textColor={"#026262"}
     >
-      <Box position={"relative"} width={9} height={9} mr={8}>
-        <Image
-          fill
-          sizes="100%"
-          objectFit="contain"
-          src="/stake-dapp.jpg"
-          alt="logo"
-        />
-      </Box>
+     
       {menuLinks.map((link) => (
         <Link href={link.href} key={link.label}>
           <Box

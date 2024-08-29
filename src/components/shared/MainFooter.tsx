@@ -2,12 +2,10 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { Props } from "@/types";
-import { useApiContext } from "@/providers/ApiProvider";
 import usePsp22Contract from "@/hooks/usePsp22Contract";
 import { useWalletContext } from "@/providers/WalletProvider";
 import useBalance from "@/hooks/useBalance";
 import useContractTx from "@/hooks/useContractTx";
-import useContractQuery from "@/hooks/useContractQuery";
 import { toast } from "react-toastify";
 import { txToaster } from "@/utils/txToaster";
 import { formatBalance, shortenAddress } from "@/utils/string";
@@ -15,23 +13,24 @@ import {
   CurrencyDollarIcon,
   BanknotesIcon,
 } from "@heroicons/react/24/outline";
-import useWatchContractEvent from "@/hooks/useWatchContractEvent";
 import { useTokenContract } from "@/providers/TokenContractWrap";
+import useStakeForm from "@/hooks/useStakeForm";
 
 const MainFooter: FC<Props> = () => {
   const [amountToSend, setAmountToSend] = useState<string>("100");
-  const contract = usePsp22Contract();
+  const contractPsp22 = usePsp22Contract();
   const { selectedAccount } = useWalletContext();
   const balance = useBalance(selectedAccount?.address);
-  const mintableMintTx = useContractTx(contract, "psp22MintableMint");
+  const mintableMintTx = useContractTx(contractPsp22, "psp22MintableMint");
 
-   const {tokenDecimal, tokenSymbol, balanceOf, refreshBalanceOf} = useTokenContract()
-   console.log("🚀 ~ tokenDecimal:", tokenDecimal)
+   const {tokenDecimal, tokenSymbol, balanceOfPsp22, refreshBalanceOfPsp22} = useTokenContract()
+   const {stakingContract} = useStakeForm()
+
 
 
 
   const handleMinToken = async () => {
-    if (!contract) return;
+    if (!contractPsp22) return;
 
     if (!selectedAccount) {
       toast.info("Please connect to your wallet");
@@ -62,43 +61,11 @@ const MainFooter: FC<Props> = () => {
       console.error(e, e.message);
       toaster.onError(e);
     } finally {
-      refreshBalanceOf();
+      refreshBalanceOfPsp22();
     }
   };
 
 
-// Listen to Transfer event from system events
-
-useWatchContractEvent(
-  contract,
-  "Transfer",
-  useCallback((events) => {
-    events.forEach((psp22Event) => {
-      const {
-        name,
-        data: { from, value, to },
-      } = psp22Event;
-
-      console.log(
-        `Found a ${name} event sent from: ${from?.address()}, message: ${to}  `
-      );
-
-      toast.info(
-        <div>
-          <p>
-            Found a <b>{name}</b> event
-          </p>
-          <p style={{ fontSize: 12 }}>
-            To:{" "}
-            <b>
-              {shortenAddress(to?.address())} claim {value} (Tst)
-            </b>
-          </p>
-        </div>
-      );
-    });
-  }, [])
-);
 
   return (
     <Box
@@ -135,7 +102,7 @@ useWatchContractEvent(
           fontWeight={"semibold"}
           textColor={"#026262"} fontSize={'14px'}
           >
-            {formatBalance(balanceOf, tokenDecimal || 18) || "0.0000"}{" "}
+            {formatBalance(balanceOfPsp22, tokenDecimal || 18) || "0.0000"}{" "}
             {tokenSymbol ?? "TKA"}
           </Text>
         </Button>

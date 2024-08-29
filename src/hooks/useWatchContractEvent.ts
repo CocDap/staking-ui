@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useApiContext } from '@/providers/ApiProvider';
 import { OmitNever } from '@/types';
@@ -45,5 +46,5 @@ export default function useWatchContractEvent<
       unsub && unsub();
       done = true;
     };
-  }, [api, contract, onNewEvent,event]);
+  }, [event, api, contract, onNewEvent]);
 }
