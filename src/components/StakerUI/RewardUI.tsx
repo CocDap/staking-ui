@@ -22,7 +22,7 @@ const RewardUI = ({userRewad}: {userRewad: bigint | undefined}) => {
       </Text>
       <Divider orientation="horizontal" my={4} borderColor={"#026262"} />
       <Text fontSize={'14px'}>Your Reward </Text>
-      <Text fontWeight={'bold'} fontSize={28}> {formatBalance(userRewad,18)}</Text>
+      <Text fontWeight={'bold'} fontSize={28}> {userRewad ? `${formatBalance(userRewad,18)} TKA` : '0.0000 TKA'}</Text>
 
    
     </Flex>
@@ -41,7 +41,7 @@ const RewardUI = ({userRewad}: {userRewad: bigint | undefined}) => {
       onClick={handClaimReward}
       isLoading={claimRewardTx.isInProgress}
     >
-        Reward
+        claim
     </Button>
   </Flex>
   )

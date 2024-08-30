@@ -10,9 +10,15 @@ import { CircleStackIcon, CalendarIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 const StakerUI = () => {
-  const { totalStake, userStakeData, lockingPeriod, tokenDecimal, userReward, tokenSymbol } =
-    useTokenContract();
-    console.log("🚀 ~ StakerUI ~ tokenSymbol:", tokenSymbol)
+  const {
+    totalStake,
+    userStakeData,
+    lockingPeriod,
+    tokenDecimal,
+    userReward,
+    tokenSymbol,
+  } = useTokenContract();
+  console.log("🚀 ~ StakerUI ~ tokenSymbol:", tokenSymbol);
 
   return (
     <>
@@ -26,9 +32,11 @@ const StakerUI = () => {
       >
         <GridItem colSpan={2}>
           <HeaderStaker
-            label="Total Stake (TKA)"
+            label="Total Stake"
             value={
-              formatBalance(userStakeData?.amount, tokenDecimal || 18) + " " + tokenSymbol || "0.0000 TKA"
+              totalStake
+                ? `${formatBalance(totalStake, tokenDecimal || 18)} TKA`
+                : "0.0000 TKA"
             }
             icon={<CircleStackIcon width={16} height={16} />}
           />
@@ -36,14 +44,22 @@ const StakerUI = () => {
         <GridItem colSpan={2}>
           <HeaderStaker
             label="Locking Period"
-            value={formatLockingPeriod(lockingPeriod) + " Days" || "0"}
+            value={
+              lockingPeriod
+                ? `${formatLockingPeriod(lockingPeriod)} Days`
+                : "0 Days"
+            }
             icon={<CalendarIcon width={16} height={16} />}
           />
         </GridItem>
         <GridItem colSpan={2}>
           <HeaderStaker
             label="Your staked Amount"
-            value={formatBalance(totalStake, tokenDecimal || 18) + " " + tokenSymbol || "0.0000 TKA"}
+            value={
+              userStakeData?.amount
+                ? `${formatBalance(userStakeData?.amount, tokenDecimal || 18)} TKA`
+                : "0.0000 TKA"
+            }
             icon={<CircleStackIcon width={16} height={16} />}
           />
         </GridItem>

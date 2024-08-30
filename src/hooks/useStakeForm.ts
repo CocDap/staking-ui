@@ -138,6 +138,7 @@ export default function useStakeForm() {
       refreshTotalStake();
       refreshUserStakeData();
       refreshBalanceOfPsp22();
+      refreshUserReward();
       setValue("numberToken", 0);
     }
   };
@@ -177,6 +178,7 @@ export default function useStakeForm() {
       refreshTotalStake();
       refreshUserStakeData();
       refreshBalanceOfPsp22();
+      refreshUserReward();
       setValue("numberToken", 0);
     }
   };
