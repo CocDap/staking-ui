@@ -1,4 +1,4 @@
-import { ADDRESS_STAKING } from '@/contracts/psp22/pop-network-testnet';
+import { ADDRESS_STAKING } from '@/contracts/pop-network-testnet';
 import stakingMeta from '@/contracts/staking/staking.json';
 import { StakingContractApi } from '@/contracts/types/staking';
 import useContract from '@/hooks/useContract';

@@ -5,7 +5,7 @@ import useStakingContract from "@/hooks/useStakingContract";
 import { useWalletContext } from "@/providers/WalletProvider";
 import { txToaster } from "@/utils/txToaster";
 import { toast } from "react-toastify";
-import { ADDRESS_STAKING } from "@/contracts/psp22/pop-network-testnet";
+import { ADDRESS_STAKING } from "@/contracts/pop-network-testnet";
 import { useTokenContract } from "@/providers/TokenContractWrap";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
